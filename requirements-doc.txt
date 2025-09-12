@@ -1,0 +1,4 @@
+myst-parser
+sphinx-autoapi
+sphinx-rtd-theme
+sphinx_copybutton

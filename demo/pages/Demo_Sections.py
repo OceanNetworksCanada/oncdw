@@ -117,5 +117,5 @@ st.divider()
 ############################################
 st.header("11. Map section")
 with st.echo():
-    client.section.map("BACAX")
+    client.section.map("BACAX", zoom=6)
 st.divider()

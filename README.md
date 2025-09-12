@@ -38,6 +38,8 @@ Portal
 through [OpenAPI](https://data.oceannetworks.ca/OpenAPI) or internal web services, and visualize the data using
 plotting libraries ([Vega-Altair](https://altair-viz.github.io/) in our case).
 
+Check [here](https://oncdw-demo.streamlit.app/Demo_Widgets) for the widgets demo.
+
 ### [time_series](https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.time_series)
 
 The API end point for querying the data is `/ScalarDataAPIService` (Internal).
@@ -150,6 +152,8 @@ client.widget.map(devices, zoom=6)
 
 UI class provides methods to create labels (based on [shields badges](https://shields.io/)) that have anchor links and
 href links.
+
+Check [here](https://oncdw-demo.streamlit.app/Demo_UI) for the UI demo.
 
 ### [import_custom_badge_css](https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.import_custom_badge_css)
 
@@ -266,6 +270,8 @@ client.ui.sensors_two_sidebar(sensor1, sensor2)
 ## Section
 
 Section class provides auxiliary (and opinionated) way to use Widget class and UI class.
+
+Check [here](https://oncdw-demo.streamlit.app/Demo_Sections) for the sections demo.
 
 ### [links](https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.links)
 

@@ -1,9 +1,9 @@
 import logging
+import re
 from typing import TYPE_CHECKING
 
 import pandas as pd
 import streamlit as st
-import re
 from pydeck.data_utils.viewport_helpers import compute_view
 
 if TYPE_CHECKING:
@@ -34,7 +34,7 @@ def _error_handler(func):
             return func(*args, **kwargs)
         except Exception as e:
             exception_message_without_token = re.sub(
-                "token=[a-zA-Z0-9\-]*", "token=TOKEN", str(e)
+                r"token=[a-zA-Z0-9\-]*", "token=TOKEN", str(e)
             )
             st.error(f"An error occurred: {exception_message_without_token}")
             logger.exception(f"Error in {func.__name__}: {e}")

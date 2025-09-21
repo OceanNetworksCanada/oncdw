@@ -1,0 +1,246 @@
+oncdw.ui
+========
+
+.. py:module:: oncdw.ui
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   oncdw.ui.UI
+
+
+Module Contents
+---------------
+
+.. py:class:: UI
+
+   .. py:method:: import_custom_badge_css(sticky_device=False, sticky_location=False)
+      :staticmethod:
+
+
+      Include a custom css to make badge look bigger.
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> client.ui.import_custom_badge_css()
+
+
+
+   .. py:method:: h1_badge(left: str, right: str, href: str = '', anchor: str = '', color: str = 'aqua')
+      :staticmethod:
+
+
+
+   .. py:method:: h2_badge(left: str, right: str, href: str = '', anchor: str = '', color: str = 'aqua')
+      :staticmethod:
+
+
+
+   .. py:method:: h3_badge(left: str, right: str, href: str = '', anchor: str = '', color: str = 'aqua')
+      :staticmethod:
+
+
+
+   .. py:method:: location(location: dict)
+      :staticmethod:
+
+
+      Location badge wrapped inside a h1 tag.
+
+      The href is a link to the Data Search page for the location code.
+      The anchor is matched with the href of `location_sidebar()`.
+
+      :param location: A dictionary containing the location code and name.
+                       Usually it is a device dict that has location info inside.
+      :type location: dict
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "location_code": "CODE",
+      ...     "location_name": "Location Name",
+      ... }
+      >>> client.ui.location(device)
+
+
+
+   .. py:method:: location_sidebar(location: dict)
+      :staticmethod:
+
+
+      Location badge for the sidebar wrapped inside a h1 tag.
+
+      The href is a link to the anchor of `location()`.
+
+      :param location: A dictionary containing the location code and name.
+                       Usually it is a device dict that has location info inside.
+      :type location: dict
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "location_code": "CODE",
+      ...     "location_name": "Location Name",
+      ... }
+      >>> client.ui.location_sidebar(device)
+
+
+
+   .. py:method:: device(device: dict)
+      :staticmethod:
+
+
+      Device badge wrapped inside a h2 tag.
+
+      The href is a link to the Data Details page for the device id.
+      The anchor is matched with the href of `device_sidebar()`.
+      Device name is used as the right side of the badge if present, otherwise device code is used.
+
+      :param device: A dictionary containing the device id, device code and device name.
+      :type device: dict
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "device_id": "12345",
+      ...     "device_name": "Device Name",
+      ... }
+      >>> client.ui.device(device)
+
+
+
+   .. py:method:: device_sidebar(device: dict)
+      :staticmethod:
+
+
+      Device badge for the sidebar wrapped inside a h2 tag.
+
+      The href a link to the anchor of `device()`.
+
+      :param device: A dictionary containing the device id and device code.
+      :type device: dict
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "device_id": "12345",
+      ...     "device_code": "CODE"
+      ... }
+      >>> client.ui.device_sidebar(device)
+
+
+
+   .. py:method:: sensor(sensor: dict, anchor: str = '')
+      :staticmethod:
+
+
+      Sensor badge wrapped inside a h3 tag.
+
+      The href is a link to the Sensor Details page for the sensor id.
+      The anchor is matched with the href of `sensor_sidebar()`.
+
+      :param sensor: A dictionary containing the sensor id and sensor name.
+      :type sensor: dict
+      :param anchor: The anchor link of the badge.
+      :type anchor: str
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> sensor = {
+      ...     "sensor_id": "67900",
+      ...     "sensor_name": "Sensor Name"
+      ... }
+      >>> client.ui.sensor_sidebar(sensor)
+
+
+
+   .. py:method:: sensor_sidebar(sensor: dict, href: str | None = None)
+      :staticmethod:
+
+
+      Sensor badge for the sidebar wrapped inside a h3 tag.
+
+      The href a link to the anchor of `sensor()`.
+
+      :param sensor: A dictionary containing the sensor id and sensor name.
+      :type sensor: dict
+      :param href: The href link of the badge.
+      :type href: str or None, optional
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> sensor = {
+      ...     "sensor_id": "67900",
+      ...     "sensor_name": "Sensor Name"
+      ... }
+      >>> client.ui.sensor_sidebar(sensor)
+
+
+
+   .. py:method:: sensors_two(sensor1: dict, sensor2: dict)
+      :staticmethod:
+
+
+      Two sensor badges for two sensors wrapped inside a h3 tag.
+
+      The href is a link to the Sensor Details page for the individual sensor id.
+      The anchor is matched with the href of `sensors_two_sidebar()`.
+
+      :param sensor1: A dictionary containing the sensor id and sensor name.
+      :type sensor1: dict
+      :param sensor2: A dictionary containing the sensor id and sensor name.
+      :type sensor2: dict
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> sensor1 = {
+      ...     "sensor_id": "167900",
+      ...     "sensor_name": "Sensor Name 1"
+      ... }
+      >>> sensor2 = {
+      ...     "sensor_id": "267900",
+      ...     "sensor_name": "Sensor Name 2"
+      ... }
+      >>> client.ui.sensor_sidebar(sensor1, sensor2)
+
+
+
+   .. py:method:: sensors_two_sidebar(sensor1: dict, sensor2: dict)
+      :staticmethod:
+
+
+      One sensor badge for two sensors for the sidebar wrapped inside a h3 tag.
+
+      The href a link to the anchor of `sensors_two()`.
+
+      :param sensor1: A dictionary containing the sensor id and sensor name.
+      :type sensor1: dict
+      :param sensor2: A dictionary containing the sensor id and sensor name.
+      :type sensor2: dict
+
+      .. rubric:: Example
+
+      >>> client = ONCDW()
+      >>> sensor1 = {
+      ...     "sensor_id": "167900",
+      ...     "sensor_name": "Sensor Name 1"
+      ... }
+      >>> sensor2 = {
+      ...     "sensor_id": "267900",
+      ...     "sensor_name": "Sensor Name 2"
+      ... }
+      >>> client.ui.sensors_two_sidebar(sensor1, sensor2)
+
+
+

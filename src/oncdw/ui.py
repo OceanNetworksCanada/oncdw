@@ -32,29 +32,35 @@ class UI:
 
             section[data-testid="stSidebar"] h1 img {
                 height: 2.25rem;
+                object-fit: fill !important;
             }
 
             section[data-testid="stSidebar"] h2 img {
                 height: 2rem;
                 padding-left: 0.5rem;
+                object-fit: fill !important;
             }
 
             section[data-testid="stSidebar"] h3 img {
                 height: 1.75rem;
                 padding-left: 1rem;
+                object-fit: fill !important;
             }
 
             /* Body Badge CSS */
             h1 img {
                 height: 2.5rem;
+                object-fit: fill !important;
             }
 
             h2 img {
                 height: 2.25rem;
+                object-fit: fill !important;
             }
 
             h3 img {
                 height: 2rem;
+                object-fit: fill !important;
             }"""
         sticky_devices_css = (
             """

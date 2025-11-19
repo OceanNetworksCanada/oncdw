@@ -78,7 +78,7 @@ labels = {
 cols = st.columns(2)
 with cols[0]:
     st.subheader("Choose a widget")
-    option = st.radio("", labels.keys(), index=None)
+    option = st.radio("Widgets", labels.keys(), index=None)
     generate_button = st.button("Generate")
 
 

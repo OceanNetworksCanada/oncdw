@@ -7,6 +7,23 @@ client = ONCDW()
 
 st.title("Widgets Demo")
 
+headers = [
+    "Data Preview png data product",
+    "Data Preview gif data product",
+    "Table for latest archive files (with hyperlink to download data)",
+    "Heatmap for latest archive files (with hyperlink to download data)",
+    "Time series scalar data plot from one sensor",
+    "Time series scalar data plot with two sensors of the same type",
+    "Time series scalar data plot with two sensors of different types",
+    "Scalar data plot with two sensors of different type on separate axis",
+    "Map widget",
+    "Time series multiple",
+]
+
+with st.sidebar:
+    for header in headers:
+        st.markdown(f"- [{header}](#{header.lower().replace(' ', '-').replace('(', '').replace(')', '')})")
+
 ############################################
 st.header("Data Preview png data product")
 with st.echo():
@@ -111,3 +128,12 @@ with st.echo():
     ]
     # Hover over the point to show the tooltip
     client.widget.map(devices, zoom=6)
+
+st.divider()
+st.title("Experimental Widget Demo")
+
+############################################
+st.header("Time series multiple")
+with st.echo():
+    sensors = [{"sensor_id": 16688}, {"sensor_id": 16689}, {"sensor_id": 13331}, {"sensor_id": 13329}]
+    client.widget.time_series_multiple(sensors, date_from="-P1D")

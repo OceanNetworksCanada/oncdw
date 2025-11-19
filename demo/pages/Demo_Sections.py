@@ -7,6 +7,24 @@ client = ONCDW()
 
 st.title("Sections Demo")
 
+headers = [
+    "1. Links",
+    "2. State of the ocean images",
+    "3. Time series section with one sensor",
+    "4. Time series section for two sensors with the same sensor type",
+    "5. Time series section for two sensors with different sensor types",
+    "6. Data preview plots",
+    "7. Location expander",
+    "8. Location sidebar",
+    "9. Sensor sidebar",
+    "10. Sensor sidebar with two sensor",
+    "11. Map section",
+]
+
+with st.sidebar:
+    for header in headers:
+        st.markdown(f"- [{header}](#{header.lower().replace(' ', '-').replace('.', '')})")
+        
 ############################################
 st.header("1. Links")
 with st.echo():

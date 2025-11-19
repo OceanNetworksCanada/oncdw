@@ -218,6 +218,46 @@ class Widget:
             st_wrapper,
         )
 
+    def time_series_multiple(
+        self,
+        sensors: list[dict],
+        date_from: str = "-P2D",
+        date_to: str | None = None,
+        st_wrapper: bool = True,
+    ):
+        date_from, date_to = parse_datetime_parameters(
+            date_from=date_from,
+            date_to=date_to,
+        )
+
+        dfs = []
+        for sensor in sensors:
+            _sensor = Sensor(sensor)
+            sensor_id = _sensor.get_sensor_id()
+
+            df, ylabel, _ = self._query.get_scalar_data(
+                source="internal",
+                sensor_id=sensor_id,
+                date_from=date_from,
+                date_to=date_to,
+            )
+            df["label"] = ylabel
+            dfs.append(df)
+
+        df_merge = pd.concat(dfs)
+
+        if df_merge.empty and st_wrapper:
+            warning_msg = (
+                f"No scalar data available for time series plot of {sensors}, "
+                f"with date from {date_from} and date to {date_to}."
+            )
+            return _log_no_data_warning(warning_msg)
+
+        return self._chart.time_series_multiple(
+            df_merge,
+            st_wrapper
+        )
+
     @_error_handler
     def table_archive_files(
         self,

@@ -63,6 +63,13 @@ class Chart:
             st_wrapper,
         )
 
+    def time_series_multiple(
+        self,
+        df,
+        st_wrapper,
+    ):
+        return Altair.time_series_multiple(df, st_wrapper)
+
     def table_archive_files(self, df, st_wrapper):
         return Altair.table_archive_files(df, st_wrapper)
 

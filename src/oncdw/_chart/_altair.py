@@ -6,7 +6,7 @@ import streamlit as st
 
 def _chart_st_wrapper(chart, st_wrapper):
     if st_wrapper:
-        return st.altair_chart(chart, use_container_width=True)
+        return st.altair_chart(chart, width="stretch")
     else:
         return chart
 
@@ -111,6 +111,16 @@ class Altair:
             chart = (
                 alt.layer(chart1, chart2).resolve_scale(y="independent").interactive()
             )
+
+        return _chart_st_wrapper(chart, st_wrapper)
+
+    @staticmethod
+    def time_series_multiple(df, st_wrapper):
+        chart = alt.Chart(df).mark_line().encode(
+            x='datetime:T',
+            y='avg:Q',
+            color='label:N',
+        ).interactive()
 
         return _chart_st_wrapper(chart, st_wrapper)
 
@@ -221,3 +231,5 @@ class Altair:
             return st.pydeck_chart(chart)
         else:
             return chart
+
+

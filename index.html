@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting started &mdash; Ocean Networks Canada Data Widgets  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="shortcut icon" href="https://www.oceannetworks.ca/svg/logo.svg"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Ocean Networks Canada Data Widgets
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Ocean Networks Canada Data Widgets</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>The oncdw Python library provides helper methods for creating data widgets,
+which visualize data retrieved from Oceans 3.0 Data Portal.</p>
+<section id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>To install the library</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>oncdw@git+https://github.com/OceanNetworksCanada/oncdw@main
+</pre></div>
+</div>
+</section>
+<section id="the-oncdw-class">
+<h2>The ONCDW class<a class="headerlink" href="#the-oncdw-class" title="Link to this heading"></a></h2>
+<p>Create an <a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/index.html#oncdw.ONCDW">ONCDW</a>
+object to access this library’s functionalities.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">oncdw</span><span class="w"> </span><span class="kn">import</span> <span class="n">ONCDW</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ONCDW</span><span class="p">()</span>  <span class="c1"># Works if the token is set by an env variable ONC_TOKEN</span>
+<span class="n">client2</span> <span class="o">=</span> <span class="n">ONCDW</span><span class="p">(</span><span class="s2">&quot;YOUR_TOKEN&quot;</span><span class="p">)</span>
+<span class="n">client3</span> <span class="o">=</span> <span class="n">ONCDW</span><span class="p">(</span><span class="s2">&quot;YOUR_TOKEN&quot;</span><span class="p">,</span> <span class="n">show_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="s2">&quot;QA&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since the library is based on <a class="reference external" href="https://streamlit.io/">streamlit</a>, to start the server for the app,
+run (assume the file name of the script is app.py).</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>streamlit<span class="w"> </span>run<span class="w"> </span>app.py
+</pre></div>
+</div>
+<p>Also, you can add your environment variables (<code class="docutils literal notranslate"><span class="pre">ONC_TOKEN</span></code> in our case) in <code class="docutils literal notranslate"><span class="pre">.streamlit/secrets.toml</span></code>
+by adding a line (double quotes are required).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ONC_TOKEN</span><span class="o">=</span><span class="s2">&quot;YOUR_TOKEN&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="widget">
+<h2>Widget<a class="headerlink" href="#widget" title="Link to this heading"></a></h2>
+<p>Widget class contains the most basic methods to generate plots or tables. They usually get data from Oceans 3.0 Data
+Portal
+through <a class="reference external" href="https://data.oceannetworks.ca/OpenAPI">OpenAPI</a> or internal web services, and visualize the data using
+plotting libraries (<a class="reference external" href="https://altair-viz.github.io/">Vega-Altair</a> in our case).</p>
+<p>Check <a class="reference external" href="https://oncdw-demo.streamlit.app/Demo_Widgets">here</a> for the widgets demo.</p>
+<section id="time-series">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.time_series">time_series</a><a class="headerlink" href="#time-series" title="Link to this heading"></a></h3>
+<p>The API end point for querying the data is <code class="docutils literal notranslate"><span class="pre">/ScalarDataAPIService</span></code> (Internal).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">4182</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="s2">&quot;2010-02-18T00:00:00.000Z&quot;</span><span class="p">,</span> <span class="s2">&quot;2010-02-21T00:00:00.000Z&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="time-series-two-sensors">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.time_series_two_sensors">time_series_two_sensors</a><a class="headerlink" href="#time-series-two-sensors" title="Link to this heading"></a></h3>
+<p>The API end point for querying the data is <code class="docutils literal notranslate"><span class="pre">/ScalarDataAPIService</span></code> (Internal).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">4182</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">sensor2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">7712</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">time_series_two_sensors</span><span class="p">(</span><span class="n">sensor1</span><span class="p">,</span> <span class="n">sensor2</span><span class="p">,</span> <span class="s2">&quot;-P4D&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">time_series_two_sensors</span><span class="p">(</span><span class="mi">4182</span><span class="p">,</span> <span class="mi">7712</span><span class="p">,</span> <span class="s2">&quot;-P4D&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="table-archive-files">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.table_archive_files">table_archive_files</a><a class="headerlink" href="#table-archive-files" title="Link to this heading"></a></h3>
+<p>The API end point for querying the data is <code class="docutils literal notranslate"><span class="pre">/api/archivefiles</span></code> (<a class="reference external" href="https://data.oceannetworks.ca/OpenAPI#get-/archivefile/location">OpenAPI</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;device_code&quot;</span><span class="p">:</span> <span class="s2">&quot;CODAR25VATK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;file_extensions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="s2">&quot;ruv&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">table_archive_files</span><span class="p">(</span>
+    <span class="n">device</span><span class="p">,</span>
+    <span class="n">date_from</span><span class="o">=</span><span class="s2">&quot;-P1D&quot;</span><span class="p">,</span>
+    <span class="n">date_to</span><span class="o">=</span><span class="s2">&quot;-PT22H&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="data-preview">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.data_preview">data_preview</a><a class="headerlink" href="#data-preview" title="Link to this heading"></a></h3>
+<p>The API end point for querying the data is <code class="docutils literal notranslate"><span class="pre">/DataPreviewService</span></code> (Internal).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;search_tree_node_id&quot;</span><span class="p">:</span> <span class="mi">450</span><span class="p">,</span>
+    <span class="s2">&quot;device_category_id&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">data_preview_option</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;data_product_format_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;plot_number&quot;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">data_preview</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">data_preview_option</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="heatmap-archive-files">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.heatmap_archive_files">heatmap_archive_files</a><a class="headerlink" href="#heatmap-archive-files" title="Link to this heading"></a></h3>
+<p>The API end point for querying the data is <code class="docutils literal notranslate"><span class="pre">/api/archivefiles</span></code> (<a class="reference external" href="https://data.oceannetworks.ca/OpenAPI#get-/archivefile/location">OpenAPI</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;device_code&quot;</span><span class="p">:</span> <span class="s2">&quot;CODAR25VATK&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;file_extensions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;tar&quot;</span><span class="p">,</span> <span class="s2">&quot;zip&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">heatmap_archive_files</span><span class="p">(</span>
+    <span class="n">device</span><span class="p">,</span>
+    <span class="n">date_from</span><span class="o">=</span><span class="s2">&quot;-P3D&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scatter-plot-two-sensors">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.scatter_plot_two_sensors">scatter_plot_two_sensors</a><a class="headerlink" href="#scatter-plot-two-sensors" title="Link to this heading"></a></h3>
+<p>The API end point for querying the data <code class="docutils literal notranslate"><span class="pre">/api/scalardata</span></code> (<a class="reference external" href="https://data.oceannetworks.ca/OpenAPI#get-/scalardata/location">OpenAPI</a>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;BACAX&quot;</span><span class="p">,</span> <span class="s2">&quot;device_category_code&quot;</span><span class="p">:</span> <span class="s2">&quot;CTD&quot;</span><span class="p">}</span>
+<span class="n">sensor_category_codes</span> <span class="o">=</span> <span class="s2">&quot;salinity,temperature&quot;</span>
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">scatter_plot_two_sensors</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">sensor_category_codes</span><span class="p">,</span><span class="n">date_from</span><span class="o">=</span><span class="s2">&quot;-P1D&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="map">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/widget/index.html#oncdw.widget.Widget.map">map</a><a class="headerlink" href="#map" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">devices</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="mf">48.314627</span><span class="p">,</span>
+        <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.058106</span><span class="p">,</span>
+        <span class="s2">&quot;location_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Location X&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;LocationX&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;device_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Device X&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;device_code&quot;</span><span class="p">:</span> <span class="s2">&quot;DeviceX&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="mf">50.54427</span><span class="p">,</span>
+        <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">126.84264</span><span class="p">,</span>
+        <span class="s2">&quot;location_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Location Y&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;LocationY&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;device_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Device Y&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;device_code&quot;</span><span class="p">:</span> <span class="s2">&quot;DeviceY&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">devices</span><span class="p">,</span> <span class="n">zoom</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ui">
+<h2>UI<a class="headerlink" href="#ui" title="Link to this heading"></a></h2>
+<p>UI class provides methods to create labels (based on <a class="reference external" href="https://shields.io/">shields badges</a>) that have anchor links and
+href links.</p>
+<p>Check <a class="reference external" href="https://oncdw-demo.streamlit.app/Demo_UI">here</a> for the UI demo.</p>
+<section id="import-custom-badge-css">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.import_custom_badge_css">import_custom_badge_css</a><a class="headerlink" href="#import-custom-badge-css" title="Link to this heading"></a></h3>
+<p>To include a custom css to make labels generated by UI class look bigger.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">import_custom_badge_css</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="location">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.location">location</a><a class="headerlink" href="#location" title="Link to this heading"></a></h3>
+<p>To display a label for one location.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;CODE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;location_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Location Name&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">location</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="location-sidebar">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.location_sidebar">location_sidebar</a><a class="headerlink" href="#location-sidebar" title="Link to this heading"></a></h3>
+<p>To display a label for one location in the sidebar.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;CODE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;location_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Location Name&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">location_sidebar</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="device">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.device">device</a><a class="headerlink" href="#device" title="Link to this heading"></a></h3>
+<p>To display a label for one device.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;device_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Device Name&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="device-sidebar">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.device_sidebar">device_sidebar</a><a class="headerlink" href="#device-sidebar" title="Link to this heading"></a></h3>
+<p>To display a label for a device in the sidebar.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;device_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;device_code&quot;</span><span class="p">:</span> <span class="s2">&quot;CODE&quot;</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">device_sidebar</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensor">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.sensor">sensor</a><a class="headerlink" href="#sensor" title="Link to this heading"></a></h3>
+<p>To display a sensor for one sensor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="s2">&quot;67900&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor Name&quot;</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">sensor_sidebar</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensor-sidebar">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.sensor_sidebar">sensor_sidebar</a><a class="headerlink" href="#sensor-sidebar" title="Link to this heading"></a></h3>
+<p>To display a label for one sensor in the sidebar.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="s2">&quot;67900&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor Name&quot;</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">sensor_sidebar</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensors-two">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.sensors_two">sensors_two</a><a class="headerlink" href="#sensors-two" title="Link to this heading"></a></h3>
+<p>To display two labels for two sensors.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="s2">&quot;167900&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor Name 1&quot;</span>
+<span class="p">}</span>
+<span class="n">sensor2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="s2">&quot;267900&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor Name 2&quot;</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">sensor_sidebar</span><span class="p">(</span><span class="n">sensor1</span><span class="p">,</span> <span class="n">sensor2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensors-two-sidebar">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/ui/index.html#oncdw.ui.UI.sensors_two_sidebar">sensors_two_sidebar</a><a class="headerlink" href="#sensors-two-sidebar" title="Link to this heading"></a></h3>
+<p>To display two labels for two sensors in the sidebar.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="s2">&quot;167900&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor Name 1&quot;</span>
+<span class="p">}</span>
+<span class="n">sensor2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="s2">&quot;267900&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sensor Name 2&quot;</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">sensors_two_sidebar</span><span class="p">(</span><span class="n">sensor1</span><span class="p">,</span> <span class="n">sensor2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="section">
+<h2>Section<a class="headerlink" href="#section" title="Link to this heading"></a></h2>
+<p>Section class provides auxiliary (and opinionated) way to use Widget class and UI class.</p>
+<p>Check <a class="reference external" href="https://oncdw-demo.streamlit.app/Demo_Sections">here</a> for the sections demo.</p>
+<section id="links">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.links">links</a><a class="headerlink" href="#links" title="Link to this heading"></a></h3>
+<p>To display a section with links.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">links</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Oceans 3.0&quot;</span><span class="p">:</span> <span class="s2">&quot;https://data.oceannetworks.ca&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Marine Traffic&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.marinetraffic.com&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">links</span><span class="p">(</span><span class="n">links</span><span class="p">,</span> <span class="s2">&quot;Useful Links&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="state-of-ocean-images">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.state_of_ocean_images">state_of_ocean_images</a><a class="headerlink" href="#state-of-ocean-images" title="Link to this heading"></a></h3>
+<p>To display the State of Ocean images for a given location code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">state_of_ocean_images</span><span class="p">(</span><span class="s2">&quot;BACAX&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.time_series">time_series</a><a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>To display time series plots for a given sensor or two sensors, with labels above the plot.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">7684</span><span class="p">,</span>
+   <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;True Heading&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">4182</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Seafloor Pressure&quot;</span>
+<span class="p">}</span>
+<span class="n">sensor2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">7712</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Uncompensated Seafloor Pressure&quot;</span>
+<span class="p">}</span>
+<span class="n">sensor</span> <span class="o">=</span> <span class="p">[</span><span class="n">sensor1</span><span class="p">,</span> <span class="n">sensor2</span><span class="p">]</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.data_preview">data_preview</a><a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>To display data preview plots for multiple data preview options.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;search_tree_node_id&quot;</span><span class="p">:</span> <span class="mi">450</span><span class="p">,</span>
+    <span class="s2">&quot;device_category_id&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+    <span class="s2">&quot;data_preview_options&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;data_product_format_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;plot_number&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;data_product_format_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;plot_number&quot;</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">data_preview</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="location-expander">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.location_expander">location_expander</a><a class="headerlink" href="#location-expander" title="Link to this heading"></a></h3>
+<p>To display a location label and information retrieved from <code class="docutils literal notranslate"><span class="pre">/api/location</span></code> web service, without duplication.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;BACAX&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;location_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Barkley Canyon Axis&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">location_expander</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.location_sidebar">location_sidebar</a><a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>To display a location badge in the side bar, without duplication.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;location_code&quot;</span><span class="p">:</span> <span class="s2">&quot;BACAX&quot;</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">location_sidebar</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.sensor_sidebar">sensor_sidebar</a><a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>Display a sensor or two sensors label in the sidebar, with the correct href link.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">7684</span><span class="p">,</span>
+   <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;True Heading&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">sensor_sidebar</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sensor1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">4182</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Seafloor Pressure&quot;</span>
+<span class="p">}</span>
+<span class="n">sensor2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;sensor_id&quot;</span><span class="p">:</span> <span class="mi">7712</span><span class="p">,</span>
+    <span class="s2">&quot;sensor_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Uncompensated Seafloor Pressure&quot;</span>
+<span class="p">}</span>
+<span class="n">sensor</span> <span class="o">=</span> <span class="p">[</span><span class="n">sensor1</span><span class="p">,</span> <span class="n">sensor2</span><span class="p">]</span>
+<span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">sensor_sidebar</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><a class="reference external" href="https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.map">map</a><a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>Display a map with a location code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">section</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">&quot;BACAX&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, DAQ team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

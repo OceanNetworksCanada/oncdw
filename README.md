@@ -8,7 +8,7 @@ which visualize data retrieved from Oceans 3.0 Data Portal.
 To install the library
 
 ```shell
-pip install oncdw @ git+https://github.com/OceanNetworksCanada/oncdw@main
+pip install oncdw@git+https://github.com/OceanNetworksCanada/oncdw@main
 ```
 
 ## The ONCDW class
@@ -20,15 +20,21 @@ object to access this library's functionalities.
 from oncdw import ONCDW
 
 client = ONCDW()  # Works if the token is set by an env variable ONC_TOKEN
-client2 = ONCDW("YOUR_TOKEN_HERE")
-client3 = ONCDW("YOUR_TOKEN_HERE", show_info=True, env="QA")
+client2 = ONCDW("YOUR_TOKEN")
+client3 = ONCDW("YOUR_TOKEN", show_info=True, env="QA")
 ```
 
 Since the library is based on [streamlit](https://streamlit.io/), to start the server for the app,
-run (assume the file name of the script is app.py)
+run (assume the file name of the script is app.py).
 
 ```shell
 streamlit run app.py
+```
+Also, you can add your environment variables (`ONC_TOKEN` in our case) in `.streamlit/secrets.toml` 
+by adding a line (double quotes are required).
+
+```
+ONC_TOKEN="YOUR_TOKEN"
 ```
 
 ## Widget

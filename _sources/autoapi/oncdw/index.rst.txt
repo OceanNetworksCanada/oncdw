@@ -1,0 +1,74 @@
+oncdw
+=====
+
+.. py:module:: oncdw
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/oncdw/section/index
+   /autoapi/oncdw/ui/index
+   /autoapi/oncdw/widget/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   oncdw.ONCDW
+
+
+Package Contents
+----------------
+
+.. py:class:: ONCDW
+
+   A wrapper class for Oceans 3.0 data widgets.
+
+   All the client library's functionality is provided as methods of this class's members,
+   namely widget, ui, and section.
+
+   :param token: The ONC API token, which could be retrieved at https://data.oceannetworks.ca/Profile once logged in.
+                 It can be set as a parameter or by using an environment variable called `ONC_TOKEN`.
+   :type token: str
+   :param env: Whether the ONC Production server URL is used for service requests. Can be "PROD" or "QA".
+   :type env: str, default "PROD"
+   :param show_info: Whether verbose script messages are displayed, such as request url.
+   :type show_info: boolean, default False
+
+   .. rubric:: Examples
+
+   >>> from oncdw import ONCDW
+   >>> client = ONCDW()  # Works if the token is set by an env variable ONC_TOKEN
+   >>> client2 = ONCDW("YOUR_TOKEN_HERE")
+   >>> client3 = ONCDW("YOUR_TOKEN_HERE", show_info=True, env="QA")
+
+
+   .. py:attribute:: token
+      :type:  str | None
+      :value: None
+
+
+
+   .. py:attribute:: env
+      :type:  str
+      :value: 'PROD'
+
+
+
+   .. py:attribute:: show_info
+      :type:  bool
+      :value: False
+
+
+
+   .. py:property:: hostname
+      :type: str
+
+
+

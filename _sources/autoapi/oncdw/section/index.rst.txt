@@ -1,0 +1,230 @@
+oncdw.section
+=============
+
+.. py:module:: oncdw.section
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   oncdw.section.Section
+
+
+Module Contents
+---------------
+
+.. py:class:: Section(client: oncdw._client.ONCDW)
+
+   .. py:method:: links(links: dict, header: str = 'Links')
+
+      Display a section with links.
+
+      :param links: A dictionary of links to be displayed at the top of the page.
+                    The keys are the link titles, and the values are the URLs.
+      :type links: dict
+      :param header: Header string above the links
+      :type header: str
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> links = {
+      ...     "Oceans 3.0": "https://data.oceannetworks.ca",
+      ...     "Marine Traffic": "https://www.marinetraffic.com",
+      ... }
+      >>> client.section.links(links, "Useful Links")
+
+
+
+   .. py:method:: state_of_ocean_images(location_code: str)
+
+      Display the State of Ocean images for a given location code.
+
+      Also return the information needed to display labels in the sidebar.
+
+      :param location_code: The location code to construct the image URLs.
+      :type location_code: str
+
+      :returns: **labels** -- A list of tuples containing the label titles and their corresponding URLs.
+      :rtype: list of tuples
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> client.section.state_of_ocean_images("BACAX")
+
+
+
+   .. py:method:: time_series(sensor: list | dict, date_from: str = '-P7D', date_to: str | None = None, shade: bool = True)
+
+      Display time series plots for a given sensor or two sensors, with labels above the plot.
+
+      :param sensor: A list representing a sensor or a pair of sensors.
+                     The format can be either:
+                     1. dict: a single sensor, {"sensor_id": sensor_id, "sensor_name": sensor_name}
+                     2. list: a pair of sensors, [{},{}]. The format of each dict is the same as a single sensor
+      :type sensor: list
+      :param date_from: date_from parameter for the web service
+      :type date_from: str
+      :param date_to: date_to parameter for the web service
+      :type date_to: str or None, optional
+      :param shade: Whether to show the shaded min-max band around the line.
+      :type shade: bool, default True
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> sensor = {
+      ...    "sensor_id": 7684,
+      ...    "sensor_name": "True Heading",
+      ... }
+      >>> client.section.time_series(sensor)
+      >>> sensor1 = {
+      ...     "sensor_id": 4182,
+      ...     "sensor_name": "Seafloor Pressure"
+      ... }
+      >>> sensor2 = {
+      ...     "sensor_id": 7712,
+      ...     "sensor_name": "Uncompensated Seafloor Pressure"
+      ... }
+      >>> sensor = [sensor1, sensor2]
+      >>> client.section.time_series(sensor)
+
+
+
+   .. py:method:: data_preview(device: dict)
+
+      Display data preview plots for multiple data preview options.
+
+      Assume data preview plots are placed in two columns,
+      and the options are a list of a dict in device["data_preview_options"].
+
+      :param device: a dict containing search tree node id, device category id
+                     and data preview options, which is a list of data preview option.
+                     The dict of data preview option should have the following keys:
+
+                     - data_product_format_id
+                     - plot_number, optional, default 1
+                     - sensor_code_id, optional
+      :type device: dict
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "search_tree_node_id": 450,
+      ...     "device_category_id": 72,
+      ...     "data_preview_options": [
+      ...         {
+      ...             "data_product_format_id": 3,
+      ...             "plot_number": 1
+      ...         },
+      ...         {
+      ...             "data_product_format_id": 3,
+      ...             "plot_number": 2
+      ...         },
+      ...     ]
+      ... }
+      >>> client.section.data_preview(device)
+
+
+
+   .. py:method:: location_expander(location: dict)
+
+      Display a location label and information retrieved from /api/location web service.
+
+      This method has a global variable `_prev_location_code` to record the previous location,
+      so that it only displays distinct locations.
+
+      :param location: A dict that contains a location code
+      :type location: dict
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "location_code": "BACAX",
+      ...     "location_name": "Barkley Canyon Axis",
+      ... }
+      >>> client.section.location_expander(device)
+
+
+
+   .. py:method:: location_sidebar(location: dict)
+
+      Display a location label in the side bar.
+
+      This method has a global variable `_prev_location_code_sidebar` to record the previous location,
+      so that it only displays distinct locations.
+
+      :param location: A dict that contains a location code
+      :type location: dict
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> device = {
+      ...     "location_code": "BACAX"
+      ... }
+      >>> client.section.location_sidebar(device)
+
+
+
+   .. py:method:: sensor_sidebar(sensor: list | dict)
+
+      Display a sensor or two sensors label in the sidebar, with the correct href link.
+
+      :param sensor: A list representing a sensor or a pair of sensors.
+                     The format can be either:
+                     1. dict: a single sensor, {"sensor_id": sensor_id, "sensor_name": sensor_name}
+                     2. list: a pair of sensors, [{},{}]. The format of each dict is the same as a single sensor
+      :type sensor: list
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> sensor = {
+      ...    "sensor_id": 7684,
+      ...    "sensor_name": "True Heading",
+      ... }
+      >>> client.section.sensor_sidebar(sensor)
+      >>> sensor1 = {
+      ...     "sensor_id": 4182,
+      ...     "sensor_name": "Seafloor Pressure"
+      ... }
+      >>> sensor2 = {
+      ...     "sensor_id": 7712,
+      ...     "sensor_name": "Uncompensated Seafloor Pressure"
+      ... }
+      >>> sensor = [sensor1, sensor2]
+      >>> client.section.sensor_sidebar(sensor)
+
+
+
+   .. py:method:: map(location_code: str, center_lat: float | None = None, center_lon: float | None = None, zoom: int | None = None)
+
+      Display a map with a location code.
+
+      It uses `/api/location` web service to query the lat and lon for the location.
+
+      :param location_code: The location code for the location
+      :type location_code: str
+      :param center_lat: The center latitude for the initial view state of the map widget.
+                         If not give, it will use the default one
+      :type center_lat: float or None, optional
+      :param center_lon: The center longitude for the initial view state of the map widget.
+                         If not give, it will use the default one
+      :type center_lon: float or None, optional
+      :param zoom: The zoom for the initial view state of the map widget.
+                   If not give, it will use the default one
+      :type zoom: int or None, optional
+
+      .. rubric:: Examples
+
+      >>> client = ONCDW()
+      >>> client.section.map("BACAX")
+
+
+

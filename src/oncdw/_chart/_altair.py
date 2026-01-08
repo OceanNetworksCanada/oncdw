@@ -13,84 +13,32 @@ def _chart_st_wrapper(chart, st_wrapper):
 
 class Altair:
     @staticmethod
-    def time_series(df: pd.DataFrame, ylabel: str, color: str, st_wrapper: bool):
-
-        df["label"] = ylabel
-        band = (
-            alt.Chart(df)
-            .mark_errorband()
-            .encode(
-                alt.Y(
-                    "max:Q",
-                    axis=alt.Axis(title=ylabel, titleColor=color, titleFontSize=18),
-                ).scale(zero=False),
-                alt.Y2("min:Q"),
-                alt.X("datetime:T").title(None),
-                tooltip=alt.value(None),  # tooltip for error band plot is buggy
-                color=alt.value(color),
-            )
-        )
-
-        line = (
-            alt.Chart(df)
-            .mark_line(stroke=color)
-            .encode(
-                alt.Y("avg:Q"),
-                alt.X("datetime:T"),
-                tooltip=[
-                    alt.Tooltip(field="label", title="label"),
-                    "min",
-                    "max",
-                    "avg",
-                    alt.Tooltip(
-                        "yearmonthdatehoursminutesseconds(datetime)", title="datetime"
-                    ),
-                ],
-            )
-        )
-
-        chart = alt.layer(band, line).interactive()
-
-        return _chart_st_wrapper(chart, st_wrapper)
-
-    @staticmethod
-    def time_series_two_sensors(
-        df1,
-        ylabel1,
-        sensor_type1,
-        color1,
-        df2,
-        ylabel2,
-        sensor_type2,
-        color2,
-        st_wrapper,
+    def time_series(
+        df: pd.DataFrame, ylabel: str, color: str, shade: bool, st_wrapper: bool
     ):
-        if sensor_type1 == sensor_type2:
-            df1["label"] = ylabel1
-            df2["label"] = ylabel2
-            df = pd.concat([df1, df2])
+        if shade:
+            df["label"] = ylabel
             band = (
                 alt.Chart(df)
                 .mark_errorband()
                 .encode(
-                    alt.Y("max:Q").scale(zero=False).title(None),
+                    alt.Y(
+                        "max:Q",
+                        axis=alt.Axis(title=ylabel, titleColor=color, titleFontSize=18),
+                    ).scale(zero=False),
                     alt.Y2("min:Q"),
                     alt.X("datetime:T").title(None),
-                    alt.Color("label:N")
-                    .scale(domain=[ylabel1, ylabel2], range=[color1, color2])
-                    .legend(orient="top", labelLimit=1000)
-                    .title(None),
                     tooltip=alt.value(None),  # tooltip for error band plot is buggy
+                    color=alt.value(color),
                 )
             )
 
             line = (
                 alt.Chart(df)
-                .mark_line()
+                .mark_line(stroke=color)
                 .encode(
                     alt.Y("avg:Q"),
                     alt.X("datetime:T"),
-                    alt.Color("label:N"),
                     tooltip=[
                         alt.Tooltip(field="label", title="label"),
                         "min",
@@ -106,8 +54,107 @@ class Altair:
 
             chart = alt.layer(band, line).interactive()
         else:
-            chart1 = Altair.time_series(df1, ylabel1, color1, st_wrapper=False)
-            chart2 = Altair.time_series(df2, ylabel2, color2, st_wrapper=False)
+            chart = (
+                alt.Chart(df)
+                .mark_line(stroke=color)
+                .encode(
+                    alt.X("datetime:T").title(None),
+                    alt.Y(
+                        "avg:Q",
+                        axis=alt.Axis(title=ylabel, titleColor=color, titleFontSize=18),
+                    ).scale(zero=False),
+                    tooltip=[
+                        alt.Tooltip("avg:Q", title=ylabel),
+                        alt.Tooltip(
+                            "yearmonthdatehoursminutesseconds(datetime)",
+                            title="datetime",
+                        ),
+                    ],
+                )
+                .interactive()
+            )
+
+        return _chart_st_wrapper(chart, st_wrapper)
+
+    @staticmethod
+    def time_series_two_sensors(
+        df1,
+        ylabel1,
+        sensor_type1,
+        color1,
+        df2,
+        ylabel2,
+        sensor_type2,
+        color2,
+        shade,
+        st_wrapper,
+    ):
+        if sensor_type1 == sensor_type2:
+            df1["label"] = ylabel1
+            df2["label"] = ylabel2
+            df = pd.concat([df1, df2])
+            if shade:
+                band = (
+                    alt.Chart(df)
+                    .mark_errorband()
+                    .encode(
+                        alt.Y("max:Q").scale(zero=False).title(None),
+                        alt.Y2("min:Q"),
+                        alt.X("datetime:T").title(None),
+                        alt.Color("label:N")
+                        .scale(domain=[ylabel1, ylabel2], range=[color1, color2])
+                        .legend(orient="top", labelLimit=1000)
+                        .title(None),
+                        tooltip=alt.value(None),  # tooltip for error band plot is buggy
+                    )
+                )
+
+                line = (
+                    alt.Chart(df)
+                    .mark_line()
+                    .encode(
+                        alt.Y("avg:Q"),
+                        alt.X("datetime:T"),
+                        alt.Color("label:N"),
+                        tooltip=[
+                            alt.Tooltip(field="label", title="label"),
+                            "min",
+                            "max",
+                            "avg",
+                            alt.Tooltip(
+                                "yearmonthdatehoursminutesseconds(datetime)",
+                                title="datetime",
+                            ),
+                        ],
+                    )
+                )
+
+                chart = alt.layer(band, line).interactive()
+            else:
+                chart = (
+                    alt.Chart(df)
+                    .mark_line()
+                    .encode(
+                        alt.X("datetime:T").title(None),
+                        alt.Y("avg:Q").scale(zero=False).title(None),
+                        alt.Color("label:N")
+                        .scale(domain=[ylabel1, ylabel2], range=[color1, color2])
+                        .legend(orient="top", labelLimit=1000)
+                        .title(None),
+                        tooltip=[
+                            alt.Tooltip(field="label", title="label"),
+                            "avg",
+                            alt.Tooltip(
+                                "yearmonthdatehoursminutesseconds(datetime)",
+                                title="datetime",
+                            ),
+                        ],
+                    )
+                    .interactive()
+                )
+        else:
+            chart1 = Altair.time_series(df1, ylabel1, color1, shade, st_wrapper=False)
+            chart2 = Altair.time_series(df2, ylabel2, color2, shade, st_wrapper=False)
             chart = (
                 alt.layer(chart1, chart2).resolve_scale(y="independent").interactive()
             )
@@ -116,11 +163,16 @@ class Altair:
 
     @staticmethod
     def time_series_multiple(df, st_wrapper):
-        chart = alt.Chart(df).mark_line().encode(
-            x='datetime:T',
-            y='avg:Q',
-            color='label:N',
-        ).interactive()
+        chart = (
+            alt.Chart(df)
+            .mark_line()
+            .encode(
+                x="datetime:T",
+                y="avg:Q",
+                color="label:N",
+            )
+            .interactive()
+        )
 
         return _chart_st_wrapper(chart, st_wrapper)
 
@@ -231,5 +283,3 @@ class Altair:
             return st.pydeck_chart(chart)
         else:
             return chart
-
-

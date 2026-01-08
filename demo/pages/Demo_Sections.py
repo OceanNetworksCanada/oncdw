@@ -47,6 +47,7 @@ st.header("3. Time series section with one sensor")
 with st.echo():
     sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
     client.section.time_series(sensor1, date_from="-P4D")
+    client.section.time_series(sensor1, date_from="-P4D",shade=False)
 st.divider()
 
 
@@ -61,6 +62,12 @@ with st.echo():
         date_from="2010-02-18T00:00:00.000Z",
         date_to="2010-02-21T00:00:00.000Z",
     )
+    client.section.time_series(
+        sensor,
+        date_from="2010-02-18T00:00:00.000Z",
+        date_to="2010-02-21T00:00:00.000Z",
+        shade=False,
+    )
 st.divider()
 
 
@@ -73,6 +80,11 @@ with st.echo():
     client.section.time_series(
         sensor,
         date_from="-P4D",
+    )
+    client.section.time_series(
+        sensor,
+        date_from="-P4D",
+        shade=False,
     )
 st.divider()
 

@@ -91,7 +91,11 @@ class Section:
         return labels
 
     def time_series(
-        self, sensor: list | dict, date_from: str = "-P7D", date_to: str | None = None
+        self,
+        sensor: list | dict,
+        date_from: str = "-P7D",
+        date_to: str | None = None,
+        shade: bool = True,
     ):
         """
         Display time series plots for a given sensor or two sensors, with labels above the plot.
@@ -107,6 +111,8 @@ class Section:
             date_from parameter for the web service
         date_to : str or None, optional
             date_to parameter for the web service
+        shade : bool, default True
+            Whether to show the shaded min-max band around the line.
 
         Examples
         --------
@@ -132,13 +138,13 @@ class Section:
             sensor1, sensor2 = sensor
             self._client.ui.sensors_two(sensor1, sensor2)
             self._client.widget.time_series_two_sensors(
-                sensor1, sensor2, date_from=date_from, date_to=date_to
+                sensor1, sensor2, date_from=date_from, date_to=date_to, shade=shade
             )
         elif isinstance(sensor, dict):
             # The sensor is a single sensor
             self._client.ui.sensor(sensor)
             self._client.widget.time_series(
-                sensor, date_from=date_from, date_to=date_to
+                sensor, date_from=date_from, date_to=date_to, shade=shade
             )
         else:
             raise ValueError(

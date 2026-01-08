@@ -33,9 +33,9 @@ class Chart:
     def __init__(self, client: "ONCDW") -> None:
         self._client = client
 
-    def time_series(self, df, ylabel, color, st_wrapper):
+    def time_series(self, df, ylabel, color, shade, st_wrapper):
         _show_latest_timestamp(df, ylabel, self._client.now)
-        return Altair.time_series(df, ylabel, color, st_wrapper)
+        return Altair.time_series(df, ylabel, color, shade, st_wrapper)
 
     def time_series_two_sensors(
         self,
@@ -47,6 +47,7 @@ class Chart:
         ylabel2,
         sensor_type2,
         color2,
+        shade,
         st_wrapper,
     ):
         _show_latest_timestamp(df1, ylabel1, self._client.now)
@@ -60,6 +61,7 @@ class Chart:
             ylabel2,
             sensor_type2,
             color2,
+            shade,
             st_wrapper,
         )
 

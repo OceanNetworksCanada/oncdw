@@ -81,6 +81,7 @@ st.divider()
 st.header("Time series scalar data plot with two sensors of the same type")
 with st.echo():
     client.widget.time_series_two_sensors(4182, 7712, date_from="-P2D")
+    client.widget.time_series_two_sensors(4182, 7712, date_from="-P2D", shade=False)
 st.divider()
 
 
@@ -91,6 +92,7 @@ with st.echo():
     sensor1 = {"sensor_id": 4176}
     sensor2 = {"sensor_id": 3016}
     client.widget.time_series_two_sensors(sensor1, sensor2, date_from="-P2D")
+    client.widget.time_series_two_sensors(sensor1, sensor2, date_from="-P2D", shade=False)
 st.divider()
 
 

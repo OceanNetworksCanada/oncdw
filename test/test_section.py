@@ -53,6 +53,14 @@ def test_time_series_two_sensors_iso_date_format(client, caplog, sensor1, sensor
     )
     _assert_no_logs(caplog, logging.WARNING)
 
+def test_time_series_two_sensors_iso_date_format_no_shade(client, caplog, sensor1, sensor2):
+    sensor = [sensor1, sensor2]
+    client.section.time_series(
+        sensor, "2010-02-18T00:00:00.000Z", "2010-02-21T00:00:00.000Z", shade=False
+    )
+    _assert_no_logs(caplog, logging.WARNING)
+
+
 
 # Data preview tests
 

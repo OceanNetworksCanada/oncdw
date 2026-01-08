@@ -55,6 +55,7 @@ class Widget:
         date_from: str = "-P2D",
         date_to: str | None = None,
         color: str = "royalblue",
+        shade: bool = True,
         st_wrapper: bool = True,
     ):
         """
@@ -79,6 +80,8 @@ class Widget:
             Color of the plot and label text used in chart widget, can be a css named color,
             hex color, rgb string and hsl string. For Altair, see
             https://docs.streamlit.io/develop/concepts/configuration/theming-customize-colors-and-borders
+        shade : bool, default True
+            Whether to show the shaded min-max band around the line.
         st_wrapper : bool, default True
             Bool flag to indicate whether it returns a streamlit object or its underlying object (Altair chart).
             This is useful if the code is run in bare mode like Jupyter notebook (not with `streamlit run`).
@@ -114,7 +117,7 @@ class Widget:
             )
             return _log_no_data_warning(warning_msg)
 
-        return self._chart.time_series(df, ylabel, color, st_wrapper)
+        return self._chart.time_series(df, ylabel, color, shade, st_wrapper)
 
     @_error_handler
     def time_series_two_sensors(
@@ -125,6 +128,7 @@ class Widget:
         date_to: str | None = None,
         color1: str = "royalblue",
         color2: str = "seagreen",
+        shade: bool = True,
         st_wrapper: bool = True,
     ):
         """
@@ -159,6 +163,8 @@ class Widget:
             Color of the second plot and label text used in chart widget, can be a css named color,
             hex color, rgb string and hsl string. For Altair, see
             https://docs.streamlit.io/develop/concepts/configuration/theming-customize-colors-and-borders
+        shade : bool, default False
+            Whether to show the shaded min-max band around the line.
         st_wrapper : bool, default True
             Bool flag to indicate whether it returns a streamlit object or its underlying object (Altair chart).
             This is useful if the code is run in bare mode like Jupyter notebook (not with `streamlit run`).
@@ -215,6 +221,7 @@ class Widget:
             ylabel2,
             sensor_type2,
             color2,
+            shade,
             st_wrapper,
         )
 
@@ -253,10 +260,7 @@ class Widget:
             )
             return _log_no_data_warning(warning_msg)
 
-        return self._chart.time_series_multiple(
-            df_merge,
-            st_wrapper
-        )
+        return self._chart.time_series_multiple(df_merge, st_wrapper)
 
     @_error_handler
     def table_archive_files(

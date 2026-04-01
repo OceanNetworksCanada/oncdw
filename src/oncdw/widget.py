@@ -578,7 +578,7 @@ class Widget:
             warning_msg = "No location data (lat and lon) for the map widget."
             return _log_no_data_warning(warning_msg)
 
-        initial_view_state = compute_view(df[["lon", "lat"]])
+        initial_view_state = compute_view(df[["lon", "lat"]].to_records(index=False))
 
         if center_lat:
             initial_view_state.latitude = center_lat

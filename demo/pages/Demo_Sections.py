@@ -5,6 +5,10 @@ from oncdw import ONCDW
 st.set_page_config(layout="wide")
 client = ONCDW()
 
+# Apply custom CSS for modern styling
+client.ui.import_custom_badge_css()
+client.ui.import_custom_widget_section_css()
+
 st.title("Sections Demo")
 
 headers = [
@@ -23,8 +27,10 @@ headers = [
 
 with st.sidebar:
     for header in headers:
-        st.markdown(f"- [{header}](#{header.lower().replace(' ', '-').replace('.', '')})")
-        
+        st.markdown(
+            f"- [{header}](#{header.lower().replace(' ', '-').replace('.', '')})"
+        )
+
 ############################################
 st.header("1. Links")
 with st.echo():
@@ -47,7 +53,7 @@ st.header("3. Time series section with one sensor")
 with st.echo():
     sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
     client.section.time_series(sensor1, date_from="-P4D")
-    client.section.time_series(sensor1, date_from="-P4D",shade=False)
+    client.section.time_series(sensor1, date_from="-P4D", shade=False)
 st.divider()
 
 

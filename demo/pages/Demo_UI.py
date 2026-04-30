@@ -8,20 +8,6 @@ client.ui.import_custom_badge_css()
 st.title("UI Demo")
 
 st.info(
-    "The only difference between the hX_badges is the parent html tag that wraps the badge, "
-    "which can be used to customize its appearance in the css file."
-)
-
-with st.echo():
-    client.ui.h1_badge("left", "right", "#href_title", "anchor_title")
-
-with st.echo():
-    client.ui.h2_badge("left", "right", "#href_header", "anchor_header")
-
-with st.echo():
-    client.ui.h3_badge("left", "right", "#href_subheader", "anchor_subheader")
-
-st.info(
     "The XXX_sidebar is a hyperlink to the XXX badge. "
     "The badge itself is a hyperlink to DMAS 3.0."
 )

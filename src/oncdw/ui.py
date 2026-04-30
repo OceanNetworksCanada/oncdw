@@ -3,14 +3,35 @@ import streamlit as st
 from ._util import Device, Sensor
 
 
-def _badge_shields(left: str | int, right: str, color) -> str:
-    def _sanitize(input_text):
-        return str(input_text).replace(" ", "%20").replace("-", "--").replace("_", "__")
+def _badge_html(left: str | int, right: str, color: str) -> str:
+    safe_left = (
+        str(left).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    )
+    safe_right = (
+        str(right).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    )
+    return (
+        f'<span class="onc-badge onc-badge-{color}">'
+        f'<span class="onc-badge-l">{safe_left}</span>'
+        f'<span class="onc-badge-r">{safe_right}</span>'
+        f"</span>"
+    )
 
-    encoded_left = _sanitize(left)
-    encoded_right = _sanitize(right)
-    img_alt_text = f"{left} - {right}"
-    return f"![{img_alt_text}](https://img.shields.io/badge/{encoded_left}-{encoded_right}-{color})"
+
+def _location_anchor(location_code: str) -> str:
+    return f"location-code-{location_code}"
+
+
+def _device_anchor(device_id: str) -> str:
+    return f"device-id-{device_id.replace(' & ', '--')}"
+
+
+def _sensor_anchor(sensor_id: str | int) -> str:
+    return f"sensor-id-{sensor_id}"
+
+
+def _sensor_pair_anchor(sensor1_id: str | int, sensor2_id: str | int) -> str:
+    return f"{_sensor_anchor(sensor1_id)},{sensor2_id}"
 
 
 class UI:
@@ -25,66 +46,130 @@ class UI:
         >>> client.ui.import_custom_badge_css()
         """
         badge_css = """
-            /* Sidebar CSS */
-            section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] {
-                gap: 0rem;
+            :root {
+                --onc-badge-size-main-location: 1.03rem;
+                --onc-badge-size-main-device: 0.92rem;
+                --onc-badge-size-main-sensor: 0.82rem;
+                --onc-badge-size-sidebar-location: 0.93rem;
+                --onc-badge-size-sidebar-device: 0.84rem;
+                --onc-badge-size-sidebar-sensor: 0.76rem;
             }
 
-            section[data-testid="stSidebar"] h1 img {
-                height: 2.25rem;
-                object-fit: fill !important;
+            /* Badge pill base */
+            .onc-badge {
+                display: inline-flex !important;
+                align-items: stretch;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                border-radius: 8px;
+                overflow: hidden;
+                font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+                font-size: 0.85rem;
+                line-height: 1;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.13);
+                white-space: nowrap;
+                width: fit-content;
+                max-width: 100%;
             }
 
-            section[data-testid="stSidebar"] h2 img {
-                height: 2rem;
-                padding-left: 0.5rem;
-                object-fit: fill !important;
+            .onc-badge-l, .onc-badge-r {
+                padding: 0.32em 0.65em;
+                font-weight: 600;
+                display: flex !important;
+                align-items: center;
+                flex: 0 0 auto;
+                white-space: nowrap;
             }
 
-            section[data-testid="stSidebar"] h3 img {
-                height: 1.75rem;
-                padding-left: 1rem;
-                object-fit: fill !important;
+            section[data-testid="stSidebar"] .onc-heading a {
+                display: inline-block;
             }
 
-            /* Body Badge CSS */
-            h1 img {
-                height: 2.5rem;
-                object-fit: fill !important;
+            /* Site — lightblue */
+            .onc-badge-lightblue .onc-badge-l { background: #0f2e4a; color: #cce9f7; }
+            .onc-badge-lightblue .onc-badge-r { background: #b8ddf0; color: #0a2035; }
+
+            /* Device — lightgreen */
+            .onc-badge-lightgreen .onc-badge-l { background: #0f3020; color: #c8f0d8; }
+            .onc-badge-lightgreen .onc-badge-r { background: #b5e8c8; color: #082514; }
+
+            /* Sensor — gold */
+            .onc-badge-gold .onc-badge-l { background: #3b2200; color: #fef3c7; }
+            .onc-badge-gold .onc-badge-r { background: #fde68a; color: #3b2200; }
+
+            /* Generic / aqua (default) */
+            .onc-badge-aqua .onc-badge-l { background: #083344; color: #a5f3fc; }
+            .onc-badge-aqua .onc-badge-r { background: #cffafe; color: #083344; }
+
+            /* Hover animation for linked badges */
+            a .onc-badge {
+                transition: box-shadow 0.15s ease, transform 0.12s ease;
+            }
+            a:hover .onc-badge {
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+                transform: translateY(-1px);
             }
 
-            h2 img {
-                height: 2.25rem;
-                object-fit: fill !important;
+            /* Badge container element (non-heading to avoid Streamlit auto-slug anchors) */
+            .onc-heading {
+                font-size: 0;
+                margin: 0.25rem 0 0.1rem !important;
+                padding: 0 !important;
+                border: none !important;
+                line-height: 1 !important;
             }
 
-            h3 img {
-                height: 2rem;
-                object-fit: fill !important;
-            }"""
+            section[data-testid="stMain"] .onc-heading {
+                margin: 0.55rem 0 0.4rem !important;
+                padding: 0.05rem 0 0.08rem !important;
+            }
+
+            /* Keep custom hash targets visible below Streamlit's fixed top bar */
+            .onc-heading[id] {
+                scroll-margin-top: 3.75rem;
+            }
+
+            /* Body badge sizes */
+            .onc-heading-1 .onc-badge { font-size: var(--onc-badge-size-main-location); }
+            .onc-heading-2 .onc-badge { font-size: var(--onc-badge-size-main-device); }
+            .onc-heading-3 .onc-badge { font-size: var(--onc-badge-size-main-sensor); }
+
+            /* Sidebar: indentation + sizing */
+            section[data-testid="stSidebar"] .onc-heading {
+                margin: 0.2rem 0 0.08rem !important;
+                padding: 0 !important;
+            }
+            section[data-testid="stSidebar"] .onc-heading-1 .onc-badge { font-size: var(--onc-badge-size-sidebar-location); }
+            section[data-testid="stSidebar"] .onc-heading-2 { padding-left: 0.75rem !important; }
+            section[data-testid="stSidebar"] .onc-heading-2 .onc-badge { font-size: var(--onc-badge-size-sidebar-device); }
+            section[data-testid="stSidebar"] .onc-heading-3 { padding-left: 1.75rem !important; }
+            section[data-testid="stSidebar"] .onc-heading-3 .onc-badge { font-size: var(--onc-badge-size-sidebar-sensor); }
+        """
         sticky_devices_css = (
             """
-            section[data-testid="stMain"] div[data-testid="stElementContainer"]:has(h2) {
+            section[data-testid="stMain"] div[data-testid="stElementContainer"]:has(.onc-heading-2) {
                 position: sticky;
                 top: 3rem;
-                z-index:100;
-                background-color: white;
+                z-index: 100;
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
             }"""
             if sticky_device
-            else None
+            else ""
         )
 
         sticky_location_css = (
             """
-            section[data-testid="stSidebar"] div[data-testid="stElementContainer"]:has(h1) {
+            section[data-testid="stSidebar"] div[data-testid="stElementContainer"]:has(.onc-heading-1) {
                 position: sticky;
                 top: 0rem;
-                z-index:100;
+                z-index: 100;
                 padding: 1rem 0;
-                background-color: rgb(240, 242, 246);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
             }"""
             if sticky_location
-            else None
+            else ""
         )
 
         st.markdown(
@@ -99,54 +184,159 @@ class UI:
         )
 
     @staticmethod
-    def _badge(
-        st_func,
+    def import_custom_widget_section_css():
+        """
+        Include custom CSS to make widgets and sections look more modern and beautiful.
+
+        Example
+        -------
+        >>> client = ONCDW()
+        >>> client.ui.import_custom_widget_section_css()
+        """
+        widget_section_css = """
+            /* Typography improvements */
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+                letter-spacing: -0.01em;
+            }
+
+            h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 2.5rem;
+                margin-bottom: 1.2rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px solid rgba(128, 128, 128, 0.3);
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            /* Divider styling */
+            hr {
+                margin: 2rem 0;
+                border: none;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(128, 128, 128, 0.3), transparent);
+            }
+
+            /* Table styling */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 1rem 0;
+            }
+
+            table th {
+                font-weight: 600;
+                padding: 0.75rem;
+                text-align: left;
+                border-bottom: 2px solid rgba(128, 128, 128, 0.3);
+                font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+            }
+
+            table td {
+                padding: 0.75rem;
+                border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+            }
+
+            /* Chart container improvements */
+            div[data-testid="stArrowVegaLiteChart"],
+            div[data-testid="stPlotlyChart"],
+            div[data-testid="stAltChart"] {
+                border-radius: 8px;
+                overflow: hidden;
+                border: 1px solid rgba(128, 128, 128, 0.15);
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2) !important;
+                margin: 1.5rem 0 !important;
+                padding: 1rem;
+            }
+
+            /* Images in main content — scoped to avoid sidebar icons */
+            section[data-testid="stMain"] img {
+                border-radius: 8px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Links in main content — scoped to avoid sidebar nav */
+            section[data-testid="stMain"] a {
+                text-decoration: none;
+                transition: opacity 0.15s ease;
+            }
+
+            section[data-testid="stMain"] a:hover {
+                opacity: 0.8;
+                text-decoration: underline;
+            }
+
+            /* Alert boxes */
+            div[data-testid="stAlert"] {
+                border-radius: 8px;
+            }
+
+            /* Expander — let Streamlit own the background */
+            div[data-testid="stExpander"] {
+                border-radius: 8px;
+            }
+
+            /* Tab styling */
+            div[role="tab"] {
+                font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+                font-weight: 500;
+            }
+
+            /* Metric styling */
+            div[data-testid="stMetricValue"] {
+                font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+                font-weight: 600;
+            }
+        """
+        st.markdown(
+            f"""
+            <style>
+                {widget_section_css}
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    @staticmethod
+    def badge(
+        level: int,
         left: str,
         right: str,
-        href: str,
-        anchor: str,
-        color: str,
+        href: str = "",
+        anchor: str = "",
+        color: str = "aqua",
     ):
-        """
-        Basic function to create a badge with an anchor and an optional href link.
-        """
+        """Render a badge row where level controls relative size (1 > 2 > 3)."""
+        if level not in (1, 2, 3):
+            level = 1
+        badge = _badge_html(left, right, color)
         if href:
             assert href.startswith("http") or href.startswith("#")
-            return st_func(
-                f"[{_badge_shields(left, right, color)}]({href})", anchor=anchor
+            href_safe = href.replace('"', "%22")
+            target = (
+                ' target="_blank" rel="noopener noreferrer"'
+                if href.startswith("http")
+                else ""
             )
+            inner = f'<a href="{href_safe}"{target} style="text-decoration:none">{badge}</a>'
         else:
-            return st_func(f"{_badge_shields(left, right, color)}", anchor=anchor)
-
-    @staticmethod
-    def h1_badge(
-        left: str,
-        right: str,
-        href: str = "",
-        anchor: str = "",
-        color: str = "aqua",
-    ):
-        return UI._badge(st.title, left, right, href, anchor, color)
-
-    @staticmethod
-    def h2_badge(
-        left: str,
-        right: str,
-        href: str = "",
-        anchor: str = "",
-        color: str = "aqua",
-    ):
-        return UI._badge(st.header, left, right, href, anchor, color)
-
-    @staticmethod
-    def h3_badge(
-        left: str,
-        right: str,
-        href: str = "",
-        anchor: str = "",
-        color: str = "aqua",
-    ):
-        return UI._badge(st.subheader, left, right, href, anchor, color)
+            inner = badge
+        id_attr = f' id="{anchor}"' if anchor else ""
+        html = f'<div class="onc-heading onc-heading-{level}"{id_attr}>{inner}</div>'
+        st.markdown(html, unsafe_allow_html=True)
 
     @staticmethod
     def location(location: dict):
@@ -175,9 +365,9 @@ class UI:
         left = _location.get_location_code()
         right = _location.get_location_name()
         href = f"https://data.oceannetworks.ca/DataSearch?location={left}"
-        anchor = f"location-code-{left}"
+        anchor = _location_anchor(left)
 
-        return UI.h1_badge(left, right, href=href, anchor=anchor, color="lightblue")
+        return UI.badge(1, left, right, href=href, anchor=anchor, color="lightblue")
 
     @staticmethod
     def location_sidebar(location: dict):
@@ -204,8 +394,8 @@ class UI:
         _location = Device(location)
         left = "Site"
         right = _location.get_location_code()
-        href = f"#location-code-{right}"
-        return UI.h1_badge(left, right, href=href, color="lightblue")
+        href = f"#{_location_anchor(right)}"
+        return UI.badge(1, left, right, href=href, anchor="", color="lightblue")
 
     @staticmethod
     def device(device: dict):
@@ -233,16 +423,17 @@ class UI:
         _device = Device(device)
 
         left = str(_device.get_device_id())
-        left_sanitized = left.replace(" & ", "--")
 
         right = _device.get_device_name() or _device.get_device_code()
-        anchor = f"device-id-{left_sanitized}"
+        anchor = _device_anchor(left)
         if "&" in left:
             # This is a concat two-devices, no href is needed
-            return UI.h2_badge(left, right, anchor=anchor, color="lightgreen")
+            return UI.badge(2, left, right, href="", anchor=anchor, color="lightgreen")
         else:
             href = f"https://data.oceannetworks.ca/DeviceListing?DeviceId={left}"
-            return UI.h2_badge(left, right, href, anchor, color="lightgreen")
+            return UI.badge(
+                2, left, right, href=href, anchor=anchor, color="lightgreen"
+            )
 
     @staticmethod
     def device_sidebar(device: dict):
@@ -268,12 +459,11 @@ class UI:
         _device = Device(device)
 
         left = str(_device.get_device_id())
-        left_sanitized = left.replace(" & ", "--")
 
         right = _device.get_device_code()
-        href = f"#device-id-{left_sanitized}"
+        href = f"#{_device_anchor(left)}"
 
-        return UI.h2_badge(left, right, href, color="lightgreen")
+        return UI.badge(2, left, right, href=href, anchor="", color="lightgreen")
 
     @staticmethod
     def sensor(sensor: dict, anchor: str = ""):
@@ -300,13 +490,13 @@ class UI:
         >>> client.ui.sensor_sidebar(sensor)
         """
         _sensor = Sensor(sensor)
-        left = _sensor.get_sensor_id()
+        left = str(_sensor.get_sensor_id())
         right = _sensor.get_sensor_name()
         href = f"https://data.oceannetworks.ca/SensorListing?SensorId={left}"
         if not anchor:
-            anchor = f"sensor-id-{left}"
+            anchor = _sensor_anchor(left)
 
-        return UI.h3_badge(left, right, href, anchor, color="gold")
+        return UI.badge(3, left, right, href=href, anchor=anchor, color="gold")
 
     @staticmethod
     def sensor_sidebar(sensor: dict, href: str | None = None):
@@ -332,12 +522,12 @@ class UI:
         >>> client.ui.sensor_sidebar(sensor)
         """
         _sensor = Sensor(sensor)
-        left = _sensor.get_sensor_id()
+        left = str(_sensor.get_sensor_id())
         right = _sensor.get_sensor_name()
         if href is None:
-            href = f"#sensor-id-{left}"
+            href = f"#{_sensor_anchor(left)}"
 
-        return UI.h3_badge(left, right, href, color="gold")
+        return UI.badge(3, left, right, href=href, anchor="", color="gold")
 
     @staticmethod
     def sensors_two(sensor1: dict, sensor2: dict):
@@ -368,7 +558,7 @@ class UI:
         col1, col2 = st.columns(2, gap="large")
         _sensor1 = Sensor(sensor1)
         _sensor2 = Sensor(sensor2)
-        anchor = f"sensor-id-{_sensor1.get_sensor_id()},{_sensor2.get_sensor_id()}"
+        anchor = _sensor_pair_anchor(_sensor1.get_sensor_id(), _sensor2.get_sensor_id())
         with col1:
             UI.sensor(sensor1, anchor=anchor)
         with col2:
@@ -402,6 +592,6 @@ class UI:
         _sensor1 = Sensor(sensor1)
         _sensor2 = Sensor(sensor2)
 
-        href = f"#sensor-id-{_sensor1.get_sensor_id()},{_sensor2.get_sensor_id()}"
+        href = f"#{_sensor_pair_anchor(_sensor1.get_sensor_id(), _sensor2.get_sensor_id())}"
         UI.sensor_sidebar(sensor1, href=href)
         UI.sensor_sidebar(sensor2, href=href)

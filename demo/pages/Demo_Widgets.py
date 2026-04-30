@@ -5,6 +5,10 @@ from oncdw import ONCDW
 st.set_page_config(layout="wide")
 client = ONCDW()
 
+# Apply custom CSS for modern styling
+client.ui.import_custom_badge_css()
+client.ui.import_custom_widget_section_css()
+
 st.title("Widgets Demo")
 
 headers = [
@@ -22,7 +26,9 @@ headers = [
 
 with st.sidebar:
     for header in headers:
-        st.markdown(f"- [{header}](#{header.lower().replace(' ', '-').replace('(', '').replace(')', '')})")
+        st.markdown(
+            f"- [{header}](#{header.lower().replace(' ', '-').replace('(', '').replace(')', '')})"
+        )
 
 ############################################
 st.header("Data Preview png data product")
@@ -92,7 +98,9 @@ with st.echo():
     sensor1 = {"sensor_id": 4176}
     sensor2 = {"sensor_id": 3016}
     client.widget.time_series_two_sensors(sensor1, sensor2, date_from="-P2D")
-    client.widget.time_series_two_sensors(sensor1, sensor2, date_from="-P2D", shade=False)
+    client.widget.time_series_two_sensors(
+        sensor1, sensor2, date_from="-P2D", shade=False
+    )
 st.divider()
 
 
@@ -137,5 +145,10 @@ st.title("Experimental Widget Demo")
 ############################################
 st.header("Time series multiple")
 with st.echo():
-    sensors = [{"sensor_id": 16688}, {"sensor_id": 16689}, {"sensor_id": 13331}, {"sensor_id": 13329}]
+    sensors = [
+        {"sensor_id": 16688},
+        {"sensor_id": 16689},
+        {"sensor_id": 13331},
+        {"sensor_id": 13329},
+    ]
     client.widget.time_series_multiple(sensors, date_from="-P1D")

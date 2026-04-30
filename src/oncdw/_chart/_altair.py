@@ -14,7 +14,12 @@ def _chart_st_wrapper(chart, st_wrapper):
 class Altair:
     @staticmethod
     def time_series(
-        df: pd.DataFrame, ylabel: str, color: str, shade: bool, st_wrapper: bool
+        df: pd.DataFrame,
+        ylabel: str,
+        color: str,
+        shade: bool,
+        st_wrapper: bool,
+        interactive: bool = True,
     ):
         if shade:
             df["label"] = ylabel
@@ -52,7 +57,7 @@ class Altair:
                 )
             )
 
-            chart = alt.layer(band, line).interactive()
+            chart = alt.layer(band, line)
         else:
             chart = (
                 alt.Chart(df)
@@ -71,8 +76,10 @@ class Altair:
                         ),
                     ],
                 )
-                .interactive()
             )
+
+        if interactive:
+            chart = chart.interactive()
 
         return _chart_st_wrapper(chart, st_wrapper)
 
@@ -153,8 +160,22 @@ class Altair:
                     .interactive()
                 )
         else:
-            chart1 = Altair.time_series(df1, ylabel1, color1, shade, st_wrapper=False)
-            chart2 = Altair.time_series(df2, ylabel2, color2, shade, st_wrapper=False)
+            chart1 = Altair.time_series(
+                df1,
+                ylabel1,
+                color1,
+                shade,
+                st_wrapper=False,
+                interactive=False,
+            )
+            chart2 = Altair.time_series(
+                df2,
+                ylabel2,
+                color2,
+                shade,
+                st_wrapper=False,
+                interactive=False,
+            )
             chart = (
                 alt.layer(chart1, chart2).resolve_scale(y="independent").interactive()
             )

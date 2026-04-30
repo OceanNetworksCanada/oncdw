@@ -8,6 +8,47 @@ if TYPE_CHECKING:
     from .._client import ONCDW
 
 
+def _estimate_plotpoints(
+    date_from: str,
+    date_to: str,
+    requested_points: int = 800,
+) -> int:
+    """Estimate a safe ``plotpoints`` value from the requested time span.
+
+    ScalarDataAPIService enables subsampling only when
+    ``expectedSampleCount > 3 * plotpoints``. Because the fallback metadata
+    path estimates one sample per minute, this helper derives an upper bound
+    from duration-in-minutes so the gate is more likely to fire consistently.
+
+    Parameters
+    ----------
+    date_from : str
+        Start datetime in ONC format (ISO 8601, typically with ``Z``).
+    date_to : str
+        End datetime in ONC format (ISO 8601, typically with ``Z``).
+    requested_points : int, default 800
+        Maximum preferred number of points for rendering.
+
+    Returns
+    -------
+    int
+        A bounded ``plotpoints`` value in ``[1, requested_points]``. The
+        upper bound follows ``floor(duration_minutes / 3) - 1`` to keep
+        ``plotpoints < expectedSampleCount / 3`` under the 1-sample/minute
+        fallback estimate used by ScalarDataAPIService.
+    """
+    start = pd.to_datetime(date_from, utc=True)
+    end = pd.to_datetime(date_to, utc=True)
+
+    duration_minutes = max((end - start).total_seconds() / 60, 0)
+    conservative_upper_bound = int(duration_minutes // 3) - 1
+
+    if conservative_upper_bound < 1:
+        return 1
+
+    return min(requested_points, conservative_upper_bound)
+
+
 @dataclass
 class Internal:
     _client: "ONCDW"
@@ -27,16 +68,18 @@ class Internal:
         - qaqcflag
         """
         base_url = f"https://{self._client.hostname}/ScalarDataAPIService"
+        plotpoints = _estimate_plotpoints(date_from, date_to)
         params = {
             "datefrom": date_from,
             "dateto": date_to,
             "sensorid": sensor_id,
             "option": 3,
             "isClean": "true",
-            "plotpoints": 1500,
+            "plotpoints": plotpoints,
         }
 
         r = requests.get(base_url, params)
+
         if self._client.show_info:
             print(f"Requesting scalar data from {r.url}")
 

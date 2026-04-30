@@ -95,7 +95,7 @@ class Section:
         sensor: list | dict,
         date_from: str = "-P7D",
         date_to: str | None = None,
-        shade: bool = True,
+        shade: bool = False,
     ):
         """
         Display time series plots for a given sensor or two sensors, with labels above the plot.

@@ -28,7 +28,9 @@ class Query:
     def get_scalar_data(
         self, source="internal", **kwargs
     ) -> tuple[pd.DataFrame, str, int]:
-        return self._get_service(source).get_scalar_data(**kwargs)
+        df, ylabel, sensor_type_id = self._get_service(source).get_scalar_data(**kwargs)
+
+        return df.dropna(), ylabel, sensor_type_id
 
     def get_archive_files(self, source="openapi", **kwargs) -> pd.DataFrame:
         return self._get_service(source).get_archive_files(**kwargs)

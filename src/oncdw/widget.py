@@ -108,6 +108,7 @@ class Widget:
             date_from=date_from,
             date_to=date_to,
         )
+        df.to_csv("debug.csv")
 
         if df.empty and st_wrapper:
             warning_msg = (
@@ -204,12 +205,21 @@ class Widget:
             date_to=date_to,
         )
 
-        if df1.empty and df2.empty and st_wrapper:
+        has_df1 = not df1.empty
+        has_df2 = not df2.empty
+
+        if not has_df1 and not has_df2 and st_wrapper:
             warning_msg = (
                 f"No scalar data available for time series plot of {ylabel1} and {ylabel2}, "
                 f"with date from {date_from} and date to {date_to}."
             )
             return _log_no_data_warning(warning_msg)
+
+        if has_df1 and not has_df2:
+            return self._chart.time_series(df1, ylabel1, color1, shade, st_wrapper)
+
+        if not has_df1 and has_df2:
+            return self._chart.time_series(df2, ylabel2, color2, shade, st_wrapper)
 
         return self._chart.time_series_two_sensors(
             df1,
@@ -247,8 +257,20 @@ class Widget:
                 date_from=date_from,
                 date_to=date_to,
             )
+            if df.empty:
+                continue
+
             df["label"] = ylabel
             dfs.append(df)
+
+        if not dfs:
+            if st_wrapper:
+                warning_msg = (
+                    f"No scalar data available for time series plot of {sensors}, "
+                    f"with date from {date_from} and date to {date_to}."
+                )
+                return _log_no_data_warning(warning_msg)
+            return pd.DataFrame()
 
         df_merge = pd.concat(dfs)
 

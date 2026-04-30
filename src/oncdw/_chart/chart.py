@@ -24,7 +24,7 @@ def _show_latest_timestamp(
         else:
             show = st.warning
             message = (
-                f"{message}, which is {time_diff.total_seconds()/3600:.2f} hours ago"
+                f"{message}, which is {time_diff.total_seconds() / 3600:.2f} hours ago"
             )
         show(message)
 

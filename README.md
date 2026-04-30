@@ -401,3 +401,37 @@ Display a map with a location code.
 ```python
 client.section.map("BACAX")
 ```
+
+## Contributing
+
+To maintain code quality, it is recommended to follow these guidelines before submitting changes. We use [uvx](https://github.com/astral-sh/uv) to run [Ruff](https://docs.astral.sh/ruff/) without needing to install it manually.
+
+### Update Dependencies
+
+Before making changes, ensure your dependencies are up-to-date:
+
+```shell
+$ uv sync --upgrade
+```
+
+### Formatting
+
+Format your code with Ruff:
+
+```shell
+$ uvx ruff format
+```
+
+### Linting
+
+Check for linting issues (including import sorting):
+
+```shell
+$ uvx ruff check
+```
+
+To automatically fix any issues:
+
+```shell
+$ uvx ruff check --fix
+```

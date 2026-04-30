@@ -34,11 +34,19 @@ def test_time_series_two_sensors_iso_date_format(caplog, client, sensor1, sensor
     )
     _assert_no_logs(caplog, logging.WARNING)
 
-def test_time_series_two_sensors_iso_date_format_no_shade(caplog, client, sensor1, sensor2):
+
+def test_time_series_two_sensors_iso_date_format_no_shade(
+    caplog, client, sensor1, sensor2
+):
     client.widget.time_series_two_sensors(
-        sensor1, sensor2, "2010-02-18T00:00:00.000Z", "2010-02-21T00:00:00.000Z", shade=False
+        sensor1,
+        sensor2,
+        "2010-02-18T00:00:00.000Z",
+        "2010-02-21T00:00:00.000Z",
+        shade=False,
     )
     _assert_no_logs(caplog, logging.WARNING)
+
 
 def test_time_series_two_sensors_iso_date_format_no_data(
     caplog, client, sensor1, sensor2

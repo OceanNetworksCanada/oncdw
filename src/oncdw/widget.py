@@ -43,7 +43,6 @@ def _error_handler(func):
 
 
 class Widget:
-
     def __init__(self, client: "ONCDW"):
         self._query = Query(client)
         self._chart = Chart(client)

@@ -13,30 +13,22 @@ dependencies = [
 
 requires-python = ">= 3.10"
 
-[project.optional-dependencies]
-dev = [
-    "ipykernel",
-    "black",
-    "isort",
-    "ruff",
-]
-
-test = [
-    "black",
-    "isort",
-    "ruff",
-    "pytest",
-    "python-dotenv",
-]
 
 [tool.ruff.lint]
 # Reference for the rules https://docs.astral.sh/ruff/rules/
 select = [
-    "E", "W", # pycodestyle
-    "F", # pyflakes
-    "UP", # pyupgrade
-    "B", # flake8-bugbear
-    "SIM", # flake8-simplify
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
 ]
 
 ignore = [
@@ -44,5 +36,9 @@ ignore = [
     "SIM117", # multiple-with-statements
 ]
 
-[tool.isort]
-profile = "black"
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "python-dotenv",
+]

@@ -10,7 +10,6 @@ if TYPE_CHECKING:
 
 
 class Query:
-
     def __init__(self, client: "ONCDW"):
         self._internal = Internal(client)
         self._openapi = OpenAPI(client)

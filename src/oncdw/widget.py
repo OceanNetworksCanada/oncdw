@@ -108,7 +108,6 @@ class Widget:
             date_from=date_from,
             date_to=date_to,
         )
-        df.to_csv("debug.csv")
 
         if df.empty and st_wrapper:
             warning_msg = (

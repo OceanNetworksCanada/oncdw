@@ -52,8 +52,8 @@ st.divider()
 st.header("3. Time series section with one sensor")
 with st.echo():
     sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
-    client.section.time_series(sensor1, date_from="-P4D")
-    client.section.time_series(sensor1, date_from="-P4D", shade=False)
+    client.section.time_series([sensor1], date_from="-P4D")
+    client.section.time_series([sensor1], date_from="-P4D", shade=False)
 st.divider()
 
 
@@ -62,14 +62,14 @@ st.header("4. Time series section for two sensors with the same sensor type")
 with st.echo():
     sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
     sensor2 = {"sensor_id": 7712, "sensor_name": "Uncompensated Seafloor Pressure"}
-    sensor = [sensor1, sensor2]
+    sensors = [[sensor1, sensor2]]
     client.section.time_series(
-        sensor,
+        sensors,
         date_from="2010-02-18T00:00:00.000Z",
         date_to="2010-02-21T00:00:00.000Z",
     )
     client.section.time_series(
-        sensor,
+        sensors,
         date_from="2010-02-18T00:00:00.000Z",
         date_to="2010-02-21T00:00:00.000Z",
         shade=False,
@@ -82,13 +82,13 @@ st.header("5. Time series section for two sensors with different sensor types")
 with st.echo():
     sensor1 = {"sensor_id": 4176, "sensor_name": "Seafloor Pressure"}
     sensor2 = {"sensor_id": 3016, "sensor_name": "DART Pressure Residual"}
-    sensor = [sensor1, sensor2]
+    sensors = [[sensor1, sensor2]]
     client.section.time_series(
-        sensor,
+        sensors,
         date_from="-P4D",
     )
     client.section.time_series(
-        sensor,
+        sensors,
         date_from="-P4D",
         shade=False,
     )
@@ -135,7 +135,7 @@ st.header("9. Sensor sidebar")
 with st.echo():
     with st.sidebar:
         sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
-        client.section.sensor_sidebar(sensor1)
+        client.section.sensor_sidebar([sensor1])
         st.divider()
 st.divider()
 
@@ -145,8 +145,8 @@ with st.echo():
     with st.sidebar:
         sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
         sensor2 = {"sensor_id": 7712, "sensor_name": "Uncompensated Seafloor Pressure"}
-        sensor = [sensor1, sensor2]
-        client.section.sensor_sidebar(sensor)
+        sensors = [[sensor1, sensor2]]
+        client.section.sensor_sidebar(sensors)
         st.divider()
 st.divider()
 

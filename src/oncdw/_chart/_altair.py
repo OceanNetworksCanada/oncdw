@@ -59,7 +59,6 @@ class Altair:
 
             chart = alt.layer(band, line)
         else:
-            print(df.avg.min(), df.avg.max())
             chart = (
                 alt.Chart(df)
                 .mark_line(stroke=color)

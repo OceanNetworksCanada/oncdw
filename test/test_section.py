@@ -27,13 +27,13 @@ def test_state_of_ocean_images(client, caplog):
 
 
 def test_time_series(client, caplog, sensor1):
-    client.section.time_series(sensor1)
+    client.section.time_series([sensor1])
     _assert_no_logs(caplog, logging.ERROR)
 
 
 def test_time_series_iso_date_format(client, caplog, sensor1):
     client.section.time_series(
-        sensor1,
+        [sensor1],
         date_from="2010-02-18T00:00:00.000Z",
         date_to="2010-02-21T00:00:00.000Z",
     )
@@ -41,15 +41,15 @@ def test_time_series_iso_date_format(client, caplog, sensor1):
 
 
 def test_time_series_two_sensors(client, caplog, sensor1, sensor2):
-    sensor = [sensor1, sensor2]
-    client.section.time_series(sensor)
+    sensors = [[sensor1, sensor2]]
+    client.section.time_series(sensors)
     _assert_no_logs(caplog, logging.ERROR)
 
 
 def test_time_series_two_sensors_iso_date_format(client, caplog, sensor1, sensor2):
-    sensor = [sensor1, sensor2]
+    sensors = [[sensor1, sensor2]]
     client.section.time_series(
-        sensor, "2010-02-18T00:00:00.000Z", "2010-02-21T00:00:00.000Z"
+        sensors, "2010-02-18T00:00:00.000Z", "2010-02-21T00:00:00.000Z"
     )
     _assert_no_logs(caplog, logging.WARNING)
 
@@ -57,9 +57,12 @@ def test_time_series_two_sensors_iso_date_format(client, caplog, sensor1, sensor
 def test_time_series_two_sensors_iso_date_format_no_shade(
     client, caplog, sensor1, sensor2
 ):
-    sensor = [sensor1, sensor2]
+    sensors = [[sensor1, sensor2]]
     client.section.time_series(
-        sensor, "2010-02-18T00:00:00.000Z", "2010-02-21T00:00:00.000Z", shade=False
+        sensors,
+        "2010-02-18T00:00:00.000Z",
+        "2010-02-21T00:00:00.000Z",
+        shade=False,
     )
     _assert_no_logs(caplog, logging.WARNING)
 
@@ -122,13 +125,13 @@ def test_location_sidebar(client, caplog):
 
 
 def test_sensor_sidebar(client, caplog, sensor1):
-    client.section.sensor_sidebar(sensor1)
+    client.section.sensor_sidebar([sensor1])
     _assert_no_logs(caplog, logging.WARNING)
 
 
 def test_sensor_sidebar_two_sensors(client, caplog, sensor1, sensor2):
-    sensor = [sensor1, sensor2]
-    client.section.sensor_sidebar(sensor)
+    sensors = [[sensor1, sensor2]]
+    client.section.sensor_sidebar(sensors)
     _assert_no_logs(caplog, logging.WARNING)
 
 

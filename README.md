@@ -301,15 +301,19 @@ client.section.state_of_ocean_images("BACAX")
 
 ### [time_series](https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.time_series)
 
-To display time series plots for a given sensor or two sensors, with labels above the plot.
+To display time series plots for one-sensor and two-sensor entries, with labels above each plot.
 
 ```python
-sensor = {
-   "sensor_id": 7684,
-   "sensor_name": "True Heading",
-}
-client.section.time_series(sensor)
+sensors = [
+    {
+    "sensor_id": 7684,
+    "sensor_name": "True Heading",
+    },
+]
+client.section.time_series(sensors)
 ```
+
+For a two-sensor plot, pass a two-sensor list as one entry.
 
 ```python
 sensor1 = {
@@ -320,8 +324,8 @@ sensor2 = {
     "sensor_id": 7712,
     "sensor_name": "Uncompensated Seafloor Pressure"
 }
-sensor = [sensor1, sensor2]
-client.section.time_series(sensor)
+sensors = [[sensor1, sensor2]]
+client.section.time_series(sensors)
 ```
 
 ### [data_preview](https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.data_preview)
@@ -374,11 +378,11 @@ client.section.location_sidebar(device)
 Display a sensor or two sensors label in the sidebar, with the correct href link.
 
 ```python
-sensor = {
-   "sensor_id": 7684,
-   "sensor_name": "True Heading",
-}
-client.section.sensor_sidebar(sensor)
+sensors = [{
+    "sensor_id": 7684,
+    "sensor_name": "True Heading",
+}]
+client.section.sensor_sidebar(sensors)
 ```
 
 ```python
@@ -390,8 +394,8 @@ sensor2 = {
     "sensor_id": 7712,
     "sensor_name": "Uncompensated Seafloor Pressure"
 }
-sensor = [sensor1, sensor2]
-client.section.sensor_sidebar(sensor)
+sensors = [[sensor1, sensor2]]
+client.section.sensor_sidebar(sensors)
 ```
 
 ### [map](https://oceannetworkscanada.github.io/oncdw/autoapi/oncdw/section/index.html#oncdw.section.Section.map)

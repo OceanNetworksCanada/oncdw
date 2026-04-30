@@ -92,64 +92,67 @@ class Section:
 
     def time_series(
         self,
-        sensor: list | dict,
+        sensors: list[dict | list[dict]],
         date_from: str = "-P7D",
         date_to: str | None = None,
         shade: bool = False,
     ):
-        """
-        Display time series plots for a given sensor or two sensors, with labels above the plot.
+        """Display time series plots for one-sensor or two-sensor entries.
 
         Parameters
         ----------
-        sensor : list
-            A list representing a sensor or a pair of sensors.
-            The format can be either:
-            1. dict: a single sensor, {"sensor_id": sensor_id, "sensor_name": sensor_name}
-            2. list: a pair of sensors, [{},{}]. The format of each dict is the same as a single sensor
+        sensors : list[dict | list[dict]]
+            A list where each item is either a single sensor dict or a two-sensor
+            list of sensor dicts. Each sensor dict must contain at least
+            ``sensor_id`` and ``sensor_name``.
         date_from : str
-            date_from parameter for the web service
+            date_from parameter for the web service.
         date_to : str or None, optional
-            date_to parameter for the web service
-        shade : bool, default True
-            Whether to show the shaded min-max band around the line.
+            date_to parameter for the web service.
+        shade : bool, default False
+            Whether to show the shaded min-max band around each line or pair.
 
         Examples
         --------
         >>> client = ONCDW()
-        >>> sensor = {
-        ...    "sensor_id": 7684,
-        ...    "sensor_name": "True Heading",
-        ... }
-        >>> client.section.time_series(sensor)
-        >>> sensor1 = {
-        ...     "sensor_id": 4182,
-        ...     "sensor_name": "Seafloor Pressure"
-        ... }
-        >>> sensor2 = {
-        ...     "sensor_id": 7712,
-        ...     "sensor_name": "Uncompensated Seafloor Pressure"
-        ... }
-        >>> sensor = [sensor1, sensor2]
-        >>> client.section.time_series(sensor)
+        >>> sensors = [{"sensor_id": 7684, "sensor_name": "True Heading"}]
+        >>> client.section.time_series(sensors)
+        >>> sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
+        >>> sensor2 = {"sensor_id": 7712, "sensor_name": "Uncompensated Seafloor Pressure"}
+        >>> client.section.time_series([sensor1, [sensor1, sensor2]])
+        >>> client.section.time_series(sensors)
         """
-        if isinstance(sensor, list):
-            # The sensor is a pair of sensors
-            sensor1, sensor2 = sensor
-            self._client.ui.sensors_two(sensor1, sensor2)
-            self._client.widget.time_series_two_sensors(
-                sensor1, sensor2, date_from=date_from, date_to=date_to, shade=shade
-            )
-        elif isinstance(sensor, dict):
-            # The sensor is a single sensor
-            self._client.ui.sensor(sensor)
-            self._client.widget.time_series(
-                sensor, date_from=date_from, date_to=date_to, shade=shade
-            )
-        else:
+        if not isinstance(sensors, list):
             raise ValueError(
-                f"Invalid sensor format: {sensor}. Expected a list or dict."
+                f"Invalid sensors format: {sensors}. Expected a list of dicts or two-sensor lists."
             )
+
+        for sensor in sensors:
+            if isinstance(sensor, list):
+                if len(sensor) != 2 or not all(
+                    isinstance(item, dict) for item in sensor
+                ):
+                    raise ValueError(
+                        f"Invalid two-sensor entry: {sensor}. Expected a list of exactly two dicts."
+                    )
+                sensor1, sensor2 = sensor
+                self._client.ui.sensors_two(sensor1, sensor2)
+                self._client.widget.time_series_two_sensors(
+                    sensor1,
+                    sensor2,
+                    date_from=date_from,
+                    date_to=date_to,
+                    shade=shade,
+                )
+            elif isinstance(sensor, dict):
+                self._client.ui.sensor(sensor)
+                self._client.widget.time_series(
+                    sensor, date_from=date_from, date_to=date_to, shade=shade
+                )
+            else:
+                raise ValueError(
+                    f"Invalid sensor item: {sensor}. Each item must be a dict or a two-dict list."
+                )
 
     def data_preview(self, device: dict):
         """
@@ -273,45 +276,46 @@ class Section:
             self._prev_location_code_sidebar = _location.get_location_code()
             self._client.ui.location_sidebar(location)
 
-    def sensor_sidebar(self, sensor: list | dict):
-        """
-        Display a sensor or two sensors label in the sidebar, with the correct href link.
+    def sensor_sidebar(self, sensors: list[dict | list[dict]]):
+        """Display sensor sidebar badges for one-sensor and two-sensor entries.
 
         Parameters
         ----------
-        sensor : list
-            A list representing a sensor or a pair of sensors.
-            The format can be either:
-            1. dict: a single sensor, {"sensor_id": sensor_id, "sensor_name": sensor_name}
-            2. list: a pair of sensors, [{},{}]. The format of each dict is the same as a single sensor
+        sensors : list[dict | list[dict]]
+            A list where each item is either a single sensor dict or a two-sensor
+            list of sensor dicts. Each sensor dict must contain at least
+            ``sensor_id`` and ``sensor_name``.
 
         Examples
         --------
         >>> client = ONCDW()
-        >>> sensor = {
-        ...    "sensor_id": 7684,
-        ...    "sensor_name": "True Heading",
-        ... }
-        >>> client.section.sensor_sidebar(sensor)
-        >>> sensor1 = {
-        ...     "sensor_id": 4182,
-        ...     "sensor_name": "Seafloor Pressure"
-        ... }
-        >>> sensor2 = {
-        ...     "sensor_id": 7712,
-        ...     "sensor_name": "Uncompensated Seafloor Pressure"
-        ... }
-        >>> sensor = [sensor1, sensor2]
-        >>> client.section.sensor_sidebar(sensor)
-
+        >>> sensors = [{"sensor_id": 7684, "sensor_name": "True Heading"}]
+        >>> client.section.sensor_sidebar(sensors)
+        >>> sensor1 = {"sensor_id": 4182, "sensor_name": "Seafloor Pressure"}
+        >>> sensor2 = {"sensor_id": 7712, "sensor_name": "Uncompensated Seafloor Pressure"}
+        >>> client.section.sensor_sidebar([sensor1, [sensor1, sensor2]])
         """
-        if isinstance(sensor, list):
-            # The sensor list contains two sensors
-            sensor1, sensor2 = sensor
-            self._client.ui.sensors_two_sidebar(sensor1, sensor2)
-        else:
-            # The sensor dict is a single sensor
-            self._client.ui.sensor_sidebar(sensor)
+        if not isinstance(sensors, list):
+            raise ValueError(
+                f"Invalid sensors format: {sensors}. Expected a list of dicts or two-sensor lists."
+            )
+
+        for sensor in sensors:
+            if isinstance(sensor, list):
+                if len(sensor) != 2 or not all(
+                    isinstance(item, dict) for item in sensor
+                ):
+                    raise ValueError(
+                        f"Invalid two-sensor entry: {sensor}. Expected a list of exactly two dicts."
+                    )
+                sensor1, sensor2 = sensor
+                self._client.ui.sensors_two_sidebar(sensor1, sensor2)
+            elif isinstance(sensor, dict):
+                self._client.ui.sensor_sidebar(sensor)
+            else:
+                raise ValueError(
+                    f"Invalid sensor item: {sensor}. Each item must be a dict or a two-dict list."
+                )
 
     def map(
         self,

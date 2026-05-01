@@ -7,7 +7,6 @@ client = ONCDW()
 
 # Apply custom CSS for modern styling
 client.ui.import_custom_badge_css()
-client.ui.import_custom_widget_section_css()
 
 st.title("Sections Demo")
 

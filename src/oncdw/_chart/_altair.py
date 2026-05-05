@@ -189,7 +189,7 @@ class Altair:
             .mark_line()
             .encode(
                 x="datetime:T",
-                y="avg:Q",
+                y=alt.Y("avg:Q").scale(zero=False),
                 color="label:N",
             )
             .interactive()

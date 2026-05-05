@@ -145,9 +145,9 @@ st.title("Experimental Widget Demo")
 st.header("Time series multiple")
 with st.echo():
     sensors = [
-        {"sensor_id": 16688},
-        {"sensor_id": 16689},
-        {"sensor_id": 13331},
-        {"sensor_id": 13329},
+        {"sensor_id": 13058},
+        {"sensor_id": 71},
+        {"sensor_id": 73},
+        {"sensor_id": 96},
     ]
-    client.widget.time_series_multiple(sensors, date_from="-P1D")
+    client.widget.time_series_multiple(sensors, date_from="2026-05-02T00:00:00.000Z", date_to="2026-05-03T00:00:00.000Z")
